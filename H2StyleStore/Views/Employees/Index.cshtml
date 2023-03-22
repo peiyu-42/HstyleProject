@@ -1,0 +1,52 @@
+﻿@model IEnumerable<H2StyleStore.Models.EFModels.Employee>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>員工中心</h2>
+
+@*<p>
+        @Html.ActionLink("新增員工資料", "Create")   用自己的Create
+    </p>*@
+<table class="table">
+    <tr>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Account)*@帳號
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Title)*@稱謂
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Employee_id)*@權限名稱
+        </th>
+        @*<th>
+                @Html.DisplayNameFor(model => model.EncryptedPassword)
+            </th>*@
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Account)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PermissionsE.Level)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.EncryptedPassword)
+                </td>*@
+            <td>
+                @Html.ActionLink("編輯", "Edit", new { id = item.Employee_id }) 
+                @*@Html.ActionLink("Details", "Details", new { id = item.Employee_id }) |*@
+                @*@Html.ActionLink("刪除", "Delete", new { id = item.Employee_id })*@
+            </td>
+        </tr>
+    }
+
+</table>

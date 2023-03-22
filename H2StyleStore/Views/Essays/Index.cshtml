@@ -1,0 +1,202 @@
+﻿@model PagedList.IPagedList<H2StyleStore.Models.ViewModels.EssayVM>
+@using PagedList.Mvc;
+@using System;
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Index";
+    var categories = ViewBag.Categories as IEnumerable<SelectListItem>;
+    var eTitle = ViewBag.EssayTitle as string;
+    var tagName = ViewBag.TagName as string;
+
+}
+
+@*@{
+        IEnumerable<SelectListItem> statuslist = ViewBag.Status;
+        IEnumerable<SelectListItem> status_order = ViewBag.Status_order;
+        var value = ViewBag.Value;
+        var statusInDb = status_order.ToList();
+
+        int total = 0;
+    }*@
+@*<h2 class="mt-2 mb-3 donotprint" align="center">文章管理</h2>
+
+    <hr>
+    <h3 style="text-align: center;">檢視近期發佈</h3>*@
+
+
+
+<form>
+    <div class="row">
+        <div class="col-md-3">文章分類:@Html.DropDownList("categoryId", categories, new { @class = "form-control" })</div>
+        <div class="col-md-3">標籤:<input type="text" name="tagName" class="form-control" value="@tagName" placeholder="請輸入標籤" /></div>
+        <div class="col-md-3">文章標題:<input type="text" name="eTitle" class="form-control" value="@eTitle" placeholder="請輸入標題、内文" /></div>
+        <div class="col-md-2" style="margin-top:24px;margin-bottom:0px;padding-left:15px">
+            <input type="submit" class="btn btn-primary" value="搜尋" />
+        </div>
+    </div>
+</form>
+<br />
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-8">
+
+            <h3>文章列表<span style="margin-left:30px;margin-bottom:10px;"> @Html.ActionLink("新增文章", "NewEssay", null, new { @class = "btn btn-secondary" })</span> </h3>
+        </div>
+        <div class="col-4">
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.ActionLink("上架時間", "Index", new { sortOrder = ViewBag.NameSortParm }, new { @class = "text-dark fa-solid fa-sort" })
+                        @*上架時間*@
+                    </th>
+                    <th>
+                        @Html.ActionLink("下架時間", "Index", new { sortOrder = ViewBag.NameSortParm }, new { @class = "text-dark fa-solid fa-sort" })
+                        @*下架時間*@
+                    </th>
+                    <th class="text-center">
+                        狀態
+                    </th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+
+
+        @foreach (var item in Model)
+        {
+            <div class="col-8">
+                <table class="table">
+                    <tr>
+
+                    <tr>
+                        <td>
+                            <br />
+                            <div class="row">
+
+                                <div class="col-md-2">
+
+
+                                    @foreach (var img in item.Images)
+                                    {
+
+                                        <img class="img w-100" style="object-fit: cover; width: 200px; height: 150px;" src="../../Images/Essaysimage/@img" />
+
+                                    }
+                                </div>
+                                <br />
+                                <div class="col-md-10">
+                                    <p>
+                                        <b style="color: #78BEF5; font-size: large; font-weight: bold;">@Html.DisplayFor(modelItem => item.ETitle)</b>
+                                    </p>
+                                    <label class="econtent">@item.EContent</label>
+                                </div>
+                            </div>
+
+                            <br />
+                            <b> 建立時間：</b>
+                            @Html.DisplayFor(modelItem => item.UplodTime)
+
+                            <b>分類：</b>
+                            @Html.DisplayFor(modelItem => item.CategoryName)
+
+                            <b>標簽：</b>
+                            @("#"+string.Join(" #",item.Tags))
+
+                            @*<b>上架：</b>
+                            @Html.DisplayFor(modelItem => item.UpLoad)
+
+                            <b>下架：</b>
+                            @Html.DisplayFor(modelItem => item.Removed)*@
+                        </td>
+                        <td class="invisible">
+                            @Html.DisplayFor(modelItem => item.CategoryId)
+                        </td>
+                    </tr>
+
+                    <td>
+                        @Html.ActionLink("Edit", "EditEssays", new { id = item.Essay_Id }, new { @class = "btn btn-default" }) |
+                        @*@Html.ActionLink("Details", "Details", new { id = item.Essay_Id }) |*@
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Essay_Id, }, new { @class = "btn btn-danger" })|
+                        <b style="color: hotpink; " ;>by</b><b class="ml-1" style="color: hotpink; font-size: medium;">@Html.DisplayFor(modelItem => item.Influencer_Name)</b>
+
+                    </td>
+                    </tr>
+
+                </table>
+            </div>
+            <div class="col-4">
+                <table class="table">
+                    <div class="row">
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UpLoad)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Removed)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PON, new { id = "IsOnShelff" })
+                            @*<div id="OffShelf">
+                                    @item.OffShelffTime
+                                </div>*@
+                            <p id="offValue"></p>
+                        </td>
+                    </tr>
+            </div>
+            </table>
+        </div>
+    }
+    </div>
+    </div>
+    <br />
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+
+    @*@section Scripts{
+            <script>
+                $(".econtent").each(function () {
+                    var decodedContent = decodeURI($(this)).html();
+                    var trimmedContent = decodedContent.Substring(0, 150);
+                    $(this).html(trimmedContent);
+                    if (decodedContent.length > 150) {
+                        $(this).append('<span>...</span>');
+                    }
+                });
+            </script>
+
+        }*@
+
+    <style>
+        .econtent {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            height: 85px;
+        }
+
+        /*.img {
+                max-width: 500px;
+                max-height: 500px;
+            }*/
+
+    </style>
+
+    @section Scripts{
+        <script>
+            $(".econtent").each(function () {
+
+                $(this).html(decodeURI($(this).html()).replace(/<\/?[^>]+(>|$)/g, "")
+                    .slice(0, 170));
+                console.log(decodeURI($(this)));
+
+            });
+        </script>
+
+    }
+

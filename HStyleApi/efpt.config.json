@@ -1,0 +1,209 @@
+﻿{
+   "CodeGenerationMode": 2,
+   "ContextClassName": "AppDbContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Models\/EFModels",
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "HStyleApi",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "[dbo].[Address]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Cart]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CommonQuestions]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CustomerQuestions]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Eassy_Follows]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[EComments_Likes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Elikes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Employees]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Essays]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Essays_Comments]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Essays_Imgs]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Essays_Tags]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[H_Activities]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[H_CheckIns]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[H_Source_Details]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Images]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Imgs_Products]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Members]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[News]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Order_Details]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Order_Log]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Order_Status]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Order_StatusDescription]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Orders]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PCategories]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PComments_Helpful]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PComments_Imgs]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PermissionsE]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PermissionsM]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Product_Comments]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Product_Likes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Products]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Question_Categories]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Spec]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Tags]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Tags_Products]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Tags_Video]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[VCommentLike]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[VideoCategories]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[VideoComments]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[VideoLikes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Videos]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[VideoViews]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": "ispanteam3.HstyleStore",
+   "UncountableWords": null,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDateOnlyTimeOnly": false,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false,
+   "UseT4": false
+}

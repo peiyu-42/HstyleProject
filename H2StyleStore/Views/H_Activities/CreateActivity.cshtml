@@ -1,0 +1,71 @@
+﻿@model H2StyleStore.Models.ViewModels.H_ActivityVM
+
+@{
+    ViewBag.Title = "CreateActivity";
+}
+
+<h2>新增活動項目</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Activity_Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Activity_Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Activity_Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Activity_Describe, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Activity_Describe, 5, 100, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Activity_Describe, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.H_Value, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.H_Value, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.H_Value, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="新增" class="btn btn-success" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="button" id="putData" value="Demo" class="btn btn-link text-dark text-decoration-none" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    <a href="Index" class="nav-link">
+        <i class="fa-solid fa-rotate-left"></i>
+        回列表
+    </a>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $("#putData").on("click", function () {
+            document.getElementById("Activity_Name").value = "新品購買打折";
+            document.getElementById("Activity_Describe").value = "購買當季新品可以折扣多少(H_value)%";
+            document.getElementById("H_Value").value = "2";
+        })
+    </script>
+}

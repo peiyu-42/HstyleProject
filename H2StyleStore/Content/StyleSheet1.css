@@ -1,0 +1,19 @@
+﻿body {
+}
+.img{
+    width : 100px;
+    height: 100px;
+}
+
+.img_big {
+    width: 200px;
+    height: 200px;
+}
+.table-bordered td{
+    border:none;
+}
+
+.borderless1 td, .borderless1 th {
+    border-left:none;
+    border-right:none;
+}

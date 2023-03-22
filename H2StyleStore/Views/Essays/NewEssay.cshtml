@@ -1,0 +1,267 @@
+﻿@model H2StyleStore.Models.ViewModels.CreateEssayVM
+@section Styles{
+    <!-- summernote -->
+    <link href="@Url.Content("https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css")" rel="stylesheet" type="text/css">
+
+    <!-- CodeMirror -->
+    <link rel="stylesheet" href="../../Scripts/plugins/codemirror/codemirror.css">
+    <link rel="stylesheet" href="../../Scripts/plugins/codemirror/theme/monokai.css">
+}
+
+
+@{
+    ViewBag.Title = "NewEssay";
+    var VideoCategories = ViewBag.VideoCategoriesItems as IEnumerable<SelectListItem>;
+}
+
+<h2>添加新文章詳細信息</h2>
+<hr />
+
+@using (Html.BeginForm("NewEssay", "Essays", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        <div class="container">
+            @*<td class="invisible">
+                    @Html.DisplayFor(modelItem => item.CategoryId)
+                </td>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Influencer_Id, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Influencer_Id, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Influencer_Id, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ETitle, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.ETitle, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ETitle, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                    @Html.LabelFor(model => model.EContent, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.EContent, 8, 100, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.EContent, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+
+            <div class="card-body col-md-13" name="EContent">
+                <textarea id="summernote" style="display: none;">
+        
+    </textarea>
+                <input id="contentArea" name="EContent" value="" hidden />
+
+            </div>
+
+
+
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="form-group col-md-12">
+                        @Html.DropDownListFor(x => x.CategoryId, VideoCategories, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.Tags, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="form-group col-md-12">
+                        @Html.EditorFor(model => model.Tags, new { htmlAttributes = new { @class = "form-control required" } })
+                        @Html.ValidationMessageFor(model => model.Tags, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="control-label col-md-2" for="File">上傳檔案</label>
+                <img id="preview" src="#" alt="" width="700" />
+                <div class="col-md-12">
+                    @*@Html.TextBoxFor(model => model.Images, new { type = "file", accept = "image/*", name = "imageFile", id = "uploadI", onchange = "setPreviewI(this)", @class = "form-control" })*@
+                    @*@Html.TextBoxFor(model => model.Images, new { type = "file", accept = "image/*", name = "files", id = "upload", onchange = "setPreviewI(this)", @class = "form-control " })*@
+                    <input type="file" name="files" class="form-control " multiple="multiple" id="upload" onchange="setPreview(this)" />
+                    @*@Html.ValidationMessageFor(model => model.Images, "", new { @class = "text-danger required" })*@
+                </div>
+            </div>
+
+
+
+
+            <div class="row">
+                @{
+                    string UpLoad = string.Empty;
+                }
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.UpLoad, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-12">
+                        <input class="form-control" type="datetime-local" id="Upload" name="UpLoad" value="@UpLoad" />
+                        @Html.ValidationMessageFor(model => model.UpLoad, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                @{
+                    string Removed = string.Empty;
+                }
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.Removed, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-12">
+                        <input class="form-control" type="datetime-local" name="Removed" id="Removed" value="Removed" />
+                        @Html.ValidationMessageFor(model => model.Removed, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+
+
+            <br />
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-12">
+                    <input id="submit" type="submit" value="確定" class="btn btn-secondary" />
+                    <input type="button" id="insertInfo" value="demo" class="btn btn-link text-dark text-decoration-none" />
+                </div>
+            </div>
+            @*<div class="form-group">
+                <div class="col-md-offset-2 col-md-12">
+                    <input type="button" id="insertInfo" value="demo" class="btn btn-link text-dark text-decoration-none" />
+                </div>
+            </div>*@
+        </div>
+    </div>
+
+    //===================================
+    @*<div class="form-group">
+            <label for="start">Start:</label>
+            <input type="text" class="form-control" id="start" name="start"
+                   value="@(Model.Start != null ? Model.Start.ToString("0:yyyy-MM-dd HH:mm:ss") : string.Empty)"
+                   min="@DateTime.Now.ToString("0:yyyy-MM-dd HH:mm:ss")" />
+        </div>
+
+        <div class="form-group">
+            <label for="end">End:</label>
+            <input type="text" class="form-control" id="end" name="end"
+                   value="@(Model.End != null ? Model.End.ToString("0:yyyy-MM-dd HH:mm:ss") : string.Empty)"
+                   min="@(Model.Start != null ? Model.Start.ToString("0:yyyy-MM-dd HH:mm:ss") : DateTime.Now.ToString("0:yyyy-MM-dd HH:mm:ss"))" />
+        </div>*@
+
+    @*<script>
+            $(document).ready(function () {
+                $("#start").datetimepicker({
+                    format: 'Y-m-d H:i',
+                    minDate: new Date(),
+                    onClose: function (selectedDate) {
+                        $("#end").datetimepicker("option", "minDate", selectedDate);
+                    }
+                });
+
+                $("#end").datetimepicker({
+                    format: 'Y-m-d H:i',
+                    onClose: function (selectedDate) {
+                        $("#start").datetimepicker("option", "maxDate", selectedDate);
+                    }
+                });
+            });
+        </script>*@
+}
+
+@*<div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>*@
+<div>
+    <a href="Index" class="nav-link">
+        <i class="fa-solid fa-rotate-left"></i>
+        回列表
+    </a>
+</div>
+
+@section Scripts {
+    <!-- Summernote -->
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script src="~/Scripts/plugins/summernote/summernote-bs4.min.js"></script>
+    <!-- CodeMirror -->
+    <script src="../../Scripts/plugins/codemirror/codemirror.js"></script>
+    <script src="../../Scripts/plugins/codemirror/mode/css/css.js"></script>
+    <script src="../../Scripts/plugins/codemirror/mode/xml/xml.js"></script>
+    <script src="../../Scripts/plugins/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+    <script>
+        //1.使用jQuery的$(function(){})函数，当DOM元素都已加载完毕时执行其中的函数。
+
+        //2.使用Summernote插件对ID为summernote的元素进行富文本编辑器的初始化。
+
+        //3.当ID为submit的元素被点击时，将.note - editable类下的HTML内容获取出来，
+        //并经过encodeURI()进行编码，然后将编码后的值赋给ID为editor的元素的value属性。
+        $(function () {
+            // Summernote
+            $('#summernote').summernote()
+
+        })
+        $("#submit").on("click", function () {
+            $("#contentArea").attr("value", encodeURI(($(".note-editable").html())));
+
+        });
+
+    </script>
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+
+        function setPreview(input) {
+            $('#preview').show();
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#preview')
+                        .attr('src', e.target.result)
+                        .maxHeight(10) // 設定圖片最大高度
+                        .maxWidth(100);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        //=============================
+        $(document).ready(function () {
+            $("#UpLoad").datetimepicker({
+                format: 'Y-m-d H:i',
+                minDate: new Date(),
+                onClose: function (selectedDate) {
+                    $("#Removed").datetimepicker("option", "minDate", selectedDate);
+                }
+            });
+
+            $("#Removed").datetimepicker({
+                format: 'Y-m-d H:i',
+                onClose: function (selectedDate) {
+                    $("#UpLoad").datetimepicker("option", "maxDate", selectedDate);
+                }
+            });
+        });
+
+        $('#insertInfo').on("click", function () {
+            document.getElementById("ETitle").value = "太想要！Jimmy Choo《美少女戰士》聯名又釋出新款，桃紅夢幻水晶靴、露娜貓水晶手拿包，與月光仙子一同變身！";
+
+            document.getElementById("CategoryId").value = 1;
+            document.getElementById("Tags").value = "少女心,經典漫畫";
+            //document.getElementById("#summernote").value = "aaadkaaaaa";
+
+
+            // 在編輯器中預設輸入指定的文字
+            var defaultContent = '《美少女戰士》的深層涵義，時尚自信的女性力量「透過時裝進行變身」正是武內直子的核心創作理念，而服飾在角色的身份上扮演極為重要的功能，特別是美少女戰士變身時的鞋履。我們兩人皆希望能在展現女性賦權之外，透過個人的時尚品味與特色，提升自信、激發包容心並彰顯魅力。— JIMMY CHOO 創意總監 Sandra Choi我非常開心幻想中的人物和故事情節，受到世界各地人們的喜愛。一直以來，我覺得最重要的是這些年輕女孩身上的青春活力、純粹想像力和女性力量，這與時髦又帶有個性的JIMMY CHOO品牌精神不謀而合。美少女戰士》漫畫作者武內直子女士';
+            $('#summernote').summernote('code', defaultContent);
+
+            // 獲取其他表單的值
+            var uploadDate = $('#UpLoad').val();
+            var removedDate = $('#Removed').val();
+            document.getElementById("UploadDate").value = uploadDate;
+            document.getElementById("RemovedDate").value = removedDate;
+        })
+    </script>
+}
+

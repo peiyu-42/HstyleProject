@@ -1,0 +1,73 @@
+﻿@model PagedList.IPagedList<H2StyleStore.Models.ViewModels.CommonQuestionVM>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Index";
+    IEnumerable<SelectListItem> QCategorylist = ViewBag.QCategory as IEnumerable<SelectListItem>;
+    string keyWord = ViewBag.KeyWord as string;
+}
+
+<h2>常見問題</h2>
+
+<form>
+    <div class="row">
+        <div class="col-md-5">問題分類:@Html.DropDownList("qcategoryId", QCategorylist, new { @class = "form-control" })</div>
+        <div class="col-md-5">關鍵字:<input type="text" name="keyWord" class="form-control" value="@keyWord" placeholder="請輸入關鍵字"></div>
+        <div class="col-md-2" style="margin-top: 24px; margin-bottom: 0px; padding-left: 15px;">
+            <input type="submit" class="btn btn-primary" value="搜尋" />
+        </div>
+    </div>
+</form>
+<br />
+<p>
+    @Html.ActionLink("新增常見問題", "CreateCommonQ", "Question", new { @class = "btn btn-success" })
+</p>
+<table class="table">
+    <tr>
+        @*<th>
+                @Html.DisplayNameFor(model => model.CommonQuestion_Id)
+            </th>*@
+        <th>
+            @*@Html.DisplayNameFor(model => model.QCategory_Name)*@
+            問題分類
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Question)*@
+            問題
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Answer)*@
+            回答
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.CommonQuestion_Id)
+                </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.QCategory_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Question)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Answer)
+            </td>
+            <td>
+                @Html.ActionLink("修改", "EditCommonQ", new { id = item.CommonQuestion_Id }, new { @class = "btn btn-default" })
+                @Html.ActionLink("刪除", "DeleteCommonQ", new { id = item.CommonQuestion_Id }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div style="text-align:right">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+</div>

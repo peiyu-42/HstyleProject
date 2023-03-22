@@ -1,0 +1,192 @@
+﻿@model H2StyleStore.Models.ViewModels.CreateVideoVM
+
+@{
+    ViewBag.Title = "CreateVideo";
+    var videoCategories = ViewBag.VideoCategoryItems as IEnumerable<SelectListItem>;
+    
+}
+
+<h2>新增影片</h2>
+
+@using (Html.BeginForm("CreateVideo", "Video", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <hr />
+        <div class="container">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2"})
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-12">
+                    @Html.TextAreaFor(model => model.Description, 8, 100, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row">
+                @{
+                    string OnShelffTime = string.Empty;
+                }
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.OnShelffTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-12">
+                        <input class="form-control" type="datetime-local" value="@OnShelffTime" name="OnShelffTime" />
+                    </div>
+                </div>
+                @{
+                    string OffShelffTime = string.Empty;
+                }
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.OffShelffTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-12 ">
+                        <input class="form-control" type="datetime-local" value="@OffShelffTime" name="OffShelffTime" />
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(c => c.CategoryId, videoCategories, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.Tags, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.Tags, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Tags, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <div class="mx-auto">
+                        <video controls width="700" id="preview">
+                            <source src="#" type="video/mp4;codecs='avc1, mp4a'">
+                        </video>
+                    </div>
+                    <div>
+                        @*@Html.TextBoxFor(model => model.FilePath, new { type = "file", accept = "video/*" ,name = "videoFile" ,id = "uploadV" ,onchange = "setPreview(this)", @class = "form-control" })*@
+                        <label class="control-label col-md-2" for="File">上傳影片檔案</label>
+                        <input type="file" name="videoFile" id="upload" onchange="setPreview(this)" accept="video/*" class="form-control" />
+                        @Html.ValidationMessageFor(model => model.FilePath, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group ">
+                <div class="col-md-12">
+                    <div class="align-items-center">
+                        @*<div id="previewI" src="#" alt=""></div>*@
+                        <img id="previewI" src="#" alt="影片縮圖" width="700" />
+                    </div>
+                    <div class="mt-2">
+                        @*@Html.TextBoxFor(model => model.Image, new { type = "file", accept = "image/*" , name = "imageFile" ,id = "uploadI" ,onchange = "setPreviewI(this)" ,@class="form-control"})*@
+                        <label class="control-label col-md-2" for="File">上傳圖片檔案</label>
+                        <input type="file" name="imageFile" id="upload" onchange="setPreviewI(this)" accept="image/*" class="form-control" required />
+                        @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-12">
+                    <input type="submit" value="儲存" class="btn btn-default" />
+                    <input type="button" id="insertInfo" value="demo" class="btn btn-link text-dark text-decoration-none" />
+                </div>
+            </div> 
+        </div>
+    </div>
+    <div>
+        <a href="Index" class="nav-link">
+            <i class="fa-solid fa-rotate-left"></i>
+            回列表
+        </a>
+    </div>
+}
+
+@*<div>
+        @Html.ActionLink("檢視所有影片", "Index")
+    </div>*@
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+
+        $('#preview').hide();
+        function setPreview(input) {
+            $('#preview').show();
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#preview')
+                        .attr('src', e.target.result)
+                        .maxHeight(150) // 設定圖片最大高度
+                        .maxWidth(200);
+                };
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                preview.innerHTML = "檔案格式未支援";
+            }
+        }
+
+        $('#previewI').hide(); // 初始化時，設定圖片不顯示
+        function setPreviewI(input) {
+            $('#previewI').show(); // 設定顯示圖片
+            if (input.files[0] && input.files) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#previewI')
+                        .attr('src', e.target.result)
+                        .maxHeight(150) // 設定圖片最大高度
+                        .maxWidth(200); // 設定圖片最大寬度
+                };
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                previewI.innerHTML = "檔案格式未支援";
+            }
+        }
+    //window.onload = function () {
+    //    var upload = document.getElementById("uploadV");
+    //    var fileContent = document.getElementById("previewV");
+    //    upload.addEventListener("change", function () {
+    //        var uploadFile = upload.files[0];
+    //        var fileType = "video.*";
+
+    //        if (uploadFile.type.match(fileType)) {
+    //            var reader = new FileReader();
+    //            reader.onload = function () {
+    //                var video = new video();
+    //                video.src = reader.result;
+    //                fileContent.appendChild(video);
+    //            };
+    //            reader.readAsDataURL(uploadFile);
+    //        } else {
+    //            fileContent.innerHTML = "檔案格式未支援"
+    //        }
+    //    })
+    //}
+
+        $('#insertInfo').on("click", function () {
+            document.getElementById("Title").value = "《驚聲尖笑》安娜法瑞絲回顧5套電影造型｜拆解經典電影";
+            document.getElementById("Description").value = "安娜·法瑞絲（Anna Faris）回顧了她的職業生涯，並分解了她最喜歡的一些電影和電視造型！ 安娜談到她在拍攝《女郎我最兔》時學會接受自己的身體樣貌，並回憶起在與萊恩·雷諾斯（Ryan Reynolds）共同主演《謝謝！再聯絡》時所扮演的角色。 她還讓我們回到了她的首次《驚聲尖笑》電影試鏡。";
+            //document.getElementById("OnShelffTime").value = ;
+            //document.getElementById("OffShelffTime").value = ;
+            document.getElementById("CategoryId").value = 1;
+            document.getElementById("Tags").value = "電影造型,安娜法瑞絲";
+            //document.getElementById("FilePath").value = "";
+            //document.getElementById("FilePath").value = "";
+        })
+    </script>
+}

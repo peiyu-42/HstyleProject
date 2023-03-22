@@ -1,0 +1,90 @@
+﻿@model PagedList.IPagedList<H2StyleStore.Models.ViewModels.H_Source_DetailVM>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "HDetail";
+    var activity = ViewBag.Activities as IEnumerable<SelectListItem>;
+    var memberName = ViewBag.MemberName as string;
+}
+
+<h2>會員活動紀錄</h2>
+
+<form>
+    <div class="row">
+        <div class="col-md-5">活動分類:@Html.DropDownList("activityId", activity, new { @class = "form-control" })</div>
+        <div class="col-md-5">會員名稱:<input type="text" name="memberName" class="form-control" value="@memberName"></div>
+        <div class="col-md-2" style="margin-top: 24px; margin-bottom: 0px; padding-left: 15px;">
+            <input type="submit" class="btn btn-primary" value="搜尋" />
+        </div>
+    </div>
+</form>
+
+<div class="d-flex flex-row-reverse bd-highlight mt-3">
+    @Html.ActionLink("新增紀錄", "CreateNewDetail", "H_Source_Details", new { @class = "btn btn-success" })
+</div>
+
+<br />
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("會員名稱", "HDetail", new { sortOrder = ViewBag.NameSortParm }, new {@class= "text-dark fa-solid fa-sort" })
+        </th>
+        <th>
+            @Html.ActionLink("活動名稱", "HDetail", new { sortOrder = ViewBag.ActivitySortParm }, new { @class = "text-dark fa-solid fa-sort" })
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Difference_H)*@
+            H幣值
+        </th>
+        <th>
+            @Html.ActionLink("取得時間", "HDetail", new { sortOrder = ViewBag.DateSortParm }, new { @class = "text-dark fa-solid fa-sort" })
+        </th>
+        <!--<th>-->
+            @*@Html.DisplayNameFor(model => model.Total_H_SoFar)*@
+            <!--H幣總額
+        </th>-->
+        <th>
+            @*@Html.DisplayNameFor(model => model.Remark)*@
+            備註
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Employee_Id)*@
+            員工
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Member_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.H_Activity_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Difference_H)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Event_Time)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Total_H_SoFar)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Remark)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee_Id)
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div style="text-align:right">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("HDetail", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+</div>

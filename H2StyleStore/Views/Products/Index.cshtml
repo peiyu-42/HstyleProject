@@ -1,0 +1,161 @@
+﻿@model IEnumerable<H2StyleStore.Models.ViewModels.ProductVM>
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<h2>商品管理列表</h2>
+
+<div class="row mb-1 align-items-end">
+    <div class="col-sm-4 col-md-3 col-lg-3">
+
+        <div>
+            <input class="form-control text-box Color" id="searchStr" name="term" type="text" placeholder="請輸入查詢關鍵字">
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-3 col-lg-3">
+        <div>
+            <button id="search" class="btn btn-primary" onclick="search()"><i class="fas fa-search fa-lg pr-2"></i>搜尋</button>
+            <input type="button" value="demo" class="btn btn-link text-dark text-decoration-none" onclick="fillsearch()" />
+        </div>
+    </div>
+    <div class="col-sm-4 col-md-6 col-lg-6 pe-0 text-right">
+        <button type="button" class="btn btn-success"><a class="text-white" href="https://localhost:44313/Products/NewProduct">新增商品</a></button>
+        <button id="allSave" type="button" class="btn btn-default">儲存</button>
+    </div>
+</div>
+
+<div id="productDatas">
+
+
+</div>
+
+
+
+
+@section Scripts {
+    <script>
+       
+
+        let editAlls = [];
+
+        $("#allSave").on("click", function () {
+            $(".discontinued").each(function () {
+                //console.log($(this).children(".ProductId").val());
+                //console.log($(this).children(":checkbox")[0].checked);
+                editAlls.push({
+                    id: $(this).children(".ProductId").val(),
+                    discontinued: $(this).children(":checkbox")[0].checked,
+                });
+
+            });
+            $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("EditAll", "Products")',
+                    contentType: "application/json",
+                    data: JSON.stringify({editAlls})
+            }).done(function (result) {
+                alert(result);
+            }).fail(function (err) {
+                alert(err.statusText)
+            })
+
+            editAlls = [];
+        });
+
+        $("#productDatas").on("click","#checkAll", function () {
+
+            $("input[name='item.Discontinued']").prop("checked", $(this).is(":checked"));
+        });
+
+
+        $("#productDatas").on("click", ".fa-solid", function () {
+            if ($(this).attr("aria-expanded") == "false") {
+                $(this).attr("class", "fa-solid fa-angle-up");
+            } else {
+                $(this).attr("class", "fa-solid fa-angle-down");
+            }
+
+        });
+
+        $("#productDatas").on("change","#pageSize", function () {
+            search();
+        });
+
+
+
+
+    </script>
+    <script>
+
+             function search() {
+            // 若 hash 沒資料，預設取第 1 頁
+            // hash = #，瀏覽器解讀為位置識別符號
+            // # 是用來指導瀏覽器動作的，對伺服器端完全無用。所以，HTTP請求中不包括 #
+            var page = window.location.hash = 1;
+
+            // 取資料
+                 fetchPage(page);
+             }
+
+
+            var fetchPage = function (page) {
+                // 準備搜尋條件資料
+                var filter = {
+                    searchStr: $("#searchStr").val(),
+                    page: page,
+                    pageSize: $("#pageSize").val(),
+                }
+                // Ajax 呼叫
+                $.ajax({
+                    url: '@Url.Action("PagedPartial", "Products")',
+                    data: filter,
+                    type: 'Post',
+                    success: function (resultHtml) {
+                        // hash是指網頁最後的錨點，以#開頭
+                        //取得資料後將目前 hash 重設
+                        window.location.hash = page;
+                        // 將 PartialView 資料寫入 div id="MemberDatas" 的區塊
+                        $('#productDatas').html(resultHtml);
+                        // 重設頁碼按鈕
+                        $('#productDatas .pagination li a').each(function (i, item) {
+                            // 若是有超連結的頁碼
+                            var hyperLinkUrl = $(item).attr('href');
+                            if (typeof hyperLinkUrl !== 'undefined' && hyperLinkUrl !== false) {
+                                // 取得當前按鈕(<a>)的對應頁碼
+                                var pageNumber = $(item).attr('href');
+                                // 將頁碼按鈕的 href 去除
+                                $(item).attr('href', '#');
+                                // 設定按下頁碼事件
+                                $(item).click(function (event) {
+                                    // 取消<a>標籤原始的連結功能
+                                    event.preventDefault();
+                                    // 取得按下的頁碼的資料
+                                    fetchPage(pageNumber);
+                                });
+                            }
+                        });
+                    }
+                });
+        };
+
+       //載入時先進行一次search才有初始畫面
+        search();
+
+    </script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js" integrity="sha256-6XMVI0zB8cRzfZjqKcD01PBsAy3FlDASrlC8SxCpInY=" crossorigin="anonymous"></script>    <!-- Google Font: Source Sans Pro -->
+
+    <script type="text/javascript">
+        $('#searchStr').autocomplete({
+            source: "/Products/QueryProducts",
+            delay: 0,
+        });
+
+        function fillsearch() {
+            document.getElementById("searchStr").value = "新品";
+        }
+    </script>
+
+}

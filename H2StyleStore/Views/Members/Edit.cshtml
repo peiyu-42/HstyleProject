@@ -1,0 +1,176 @@
+﻿@model H2StyleStore.Models.EFModels.Member
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>編輯會員</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4></h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="form-group">
+        @*@Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })*@姓名
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @*@Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })*@信箱
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @*@Html.LabelFor(model => model.Account, htmlAttributes: new { @class = "control-label col-md-2" })*@帳號
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Account, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => model.Account, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @*@Html.LabelFor(model => model.Phone_Number, htmlAttributes: new { @class = "control-label col-md-2" })*@電話號碼
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Phone_Number, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Phone_Number, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @*@Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })*@住址
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+
+
+    @*@{
+            var gender = Boolean.Empty;
+            if (Model.Gender==true)
+            {
+                gender = Model.Gender.ToString("true");    //todo 把預設值放進Gender
+            }
+        }*@
+
+    @{ 
+        var Gender = Model.Gender;
+    }
+    <div class="form-group">
+        @*@Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-2" })*@性別
+        <div class="col-md-10">
+            <div class="checkbox">
+                @if (Gender)
+                {
+                    @:<input type="radio" name="gender" value="true" checked>男 <input type="radio" name="gender" value="False"> 女
+
+
+                }
+                else
+                {
+                    @:<input type="radio" name="gender" value="true">男 <input type="radio" name="gender" value="False" checked> 女
+
+                }
+                @*@Html.EditorFor(model => model.Gender)*@
+                @*<input type="radio" name="gender" value="true" checked>男 <input type="radio" name="gender" value="False">女*@
+                @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    @{
+        var Birthday = Model.Birthday.ToString("yyyy-MM-ddTHH:mm:ss");
+    }
+    <div class="form-group">
+        @*@Html.LabelFor(model => model.Birthday, htmlAttributes: new { @class = "control-label col-md-2" })*@生日
+        <div class="col-md-10">
+            @*<input type="datetime-local" class="form-control" value="@Birthday" />*@
+            <input type="datetime-local" class="form-control" id="Birthday" name="Birthday" value="@Birthday" />
+            @*@Html.EditorFor(model => model.Birthday, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })*@  @*顯示用得*@
+            @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    @*<div class="form-group">
+            @Html.LabelFor(model => model.Permission_Id, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Permission_Id, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Permission_Id, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+
+
+    <div class="form-group">
+        @*@Html.LabelFor(model => model.Jointime, htmlAttributes: new { @class = "control-label col-md-2" })*@加入會員時間
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Jointime, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => model.Jointime, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+
+    <div class="form-group">
+            @*@Html.LabelFor(model => model.Mail_verify, htmlAttributes: new { @class = "control-label col-md-2" })*@開通狀態
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Mail_verify, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Mail_verify, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.Mail_code, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Mail_code, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Mail_code, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+    <div class="form-group">
+        @*@Html.LabelFor(model => model.Total_H, htmlAttributes: new { @class = "control-label col-md-2" })*@優惠幣
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Total_H, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Total_H, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    @*<div class="form-group">
+            @Html.LabelFor(model => model.EncryptedPassword, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EncryptedPassword, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EncryptedPassword, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="儲存" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+
+    
+
+    <div>
+        @Html.ActionLink("返回目錄", "Index")
+    </div>
+}
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }

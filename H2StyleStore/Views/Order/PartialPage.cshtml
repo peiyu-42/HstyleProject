@@ -1,0 +1,281 @@
+﻿@model PagedList.IPagedList<H2StyleStore.Models.ViewModels.OrderVM>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+
+    IEnumerable<SelectListItem> status_order = ViewBag.Status_order;
+    var statusInDb = status_order.ToList();
+}
+
+
+
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+<form action="@Url.Action("Update")" method="post">
+    <div style="text-align:right">
+        <input type="submit" id="save" value="儲存" class="btn btn-info mb-3" onclick="return confirm('確定儲存?')" />
+        <button type="button" class="btn btn-warning mb-3" id="ship">一鍵出貨</button>
+    </div>
+    <div>
+    <table class="table table-bordered table-hover borderless">
+    <thead>
+        <tr>
+            <th class="reset cursor-pointer">
+                訂單編號
+            </th>
+            <th>
+                會員名稱
+            </th>
+            <th class="sortOrder cursor-pointer" @*value="@ViewBag.TotalSortParm"*@>
+                總額 @*<i class="fa-solid fa-sort "></i>*@
+            </th>
+            <th>
+                付款方式
+            </th>
+            <th>
+                出貨時間
+            </th>
+            <th>
+                退貨時間
+            </th>
+            <th>
+                退貨
+            </th>
+            <th>
+                訂單成立日期
+            <th>
+                訂單狀態
+            </th>
+            <th>
+            </th>
+            <th>
+            </th>
+            <th style="width: 3%;">
+                <label for="checkAll" class="cursor-pointer">全選</label><input type="checkbox" id="checkAll" name="checkAll" style="width: 15px; height: 15px;" />
+            </th>
+        </tr>
+    </thead>
+    @{int i = 0;}
+    @{ string shippedDate = null;}
+    <tbody>
+        @foreach (var item in Model)
+        {
+            if (item.ShippedDate.HasValue == true)
+            {
+                shippedDate = item.ShippedDate.Value.ToString("yyyy-MM-ddTHH:mm:ss");
+            }
+            <tr class="orderrow p-0">
+                <td id="Order_id">
+                    @Html.DisplayFor(modelItem => item.Order_id, new { id = "Order_id" })
+                    <input type="hidden" value="@item.Order_id" name="orders[@i].Order_id" />
+                    @{
+                        if (item.Status_id == 5)
+                        {
+                            <div class="pl-2">
+                                <span class="label label-success text-light" style="border: 2px solid #5cb85c; border-radius: 30px; background-color: #5cb85c; font-size:small">已完成</span>
+                            </div>
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MemberName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Payment)
+                </td>
+                <td id="shippedDate">
+                    @if (item.Status_id > 4)
+                    {
+                        <input type="datetime-local" readonly="readonly" value="@shippedDate" name="orders[@i].ShippedDate" />
+                    }
+                    else
+                    {
+                        <input type="datetime-local" value="@shippedDate" name="orders[@i].ShippedDate" />
+                    }
+
+                    @Html.ValidationMessageFor(modelItem => item.ShippedDate, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RequestRefundTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RequestRefund)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedTime)
+                </td>
+                <td id="status">
+                    @if (item.Status == "取消")
+                    {<select name="orders[@i].Status" readonly="readonly" style="width: 145px">
+                            <option value="@item.Status">@item.Status</option>
+                        </select>
+                    }
+                    else if (item.Status_id >= 9)
+                    {
+                        <select name="orders[@i].Status" readonly="readonly" style="width: 145px">
+                            <option value="@item.Status">@item.Status</option>
+                        </select>
+                    }
+                    else if (item.RequestRefund == true)
+                    {
+                        <select name="orders[@i].Status" style="width: 145px">
+                            <option value="@item.Status">@item.Status</option>
+
+                            @for (int k = 0; k < statusInDb.Count; k++)
+                            {
+                                if (statusInDb[k].Text != @item.Status && Convert.ToInt32(statusInDb[k].Value) >= 7)
+                                {
+                                    <option value="@statusInDb[k].Text">@statusInDb[k].Text</option>
+                                }
+                            }
+                        </select>
+                    }
+                    else
+                    {
+                        <select name="orders[@i].Status" style="width: 145px">
+                            <option value="@item.Status">@item.Status</option>
+
+                            @for (int k = 0; k < statusInDb.Count; k++)
+                            {
+                                if (statusInDb[k].Text != @item.Status && Convert.ToInt32(statusInDb[k].Value) > @item.Status_id && Convert.ToInt32(statusInDb[k].Value) < 7)
+                                {
+                                    <option value="@statusInDb[k].Text">@statusInDb[k].Text</option>
+                                }
+                            }
+                        </select>
+                    }
+
+                    @Html.ValidationMessageFor(modelItem => item.Status, "", new { @class = "text-danger" })
+                </td>
+                <td class="edit" style="cursor:pointer">
+                    <i class="fa-solid fa-pen-to-square pl-2"></i>
+                </td>
+                <td id="info">
+                    <a class="btn p-0 pb-1" data-toggle="collapse" href="#multiCollapseExample_@i" role="button" aria-expanded="false" aria-controls="multiCollapseExample_@i">
+                        <i class="fa fa-angle-down fa-lg menu__icon--open"></i>
+                        <i class="fa fa-angle-up fa-lg menu__icon--close"></i>
+                    </a>
+                </td>
+                <td class="checkbox">
+                    @if (item.Status_id == 3)
+                    {
+                        <input type="checkbox" style="padding-bottom: 50px; margin-top: 6px; width:15px; height: 15px;" class="enable" />
+                    }
+                    else
+                    {
+                        <input type="checkbox" style="margin-bottom: 50px; margin-top: 6px; width: 15px; height: 15px; " disabled />
+                    }
+
+                </td>
+            </tr>
+            <tr class="no-hover list">
+                <td colspan="16">
+                    <div class="card card-body collapse multi-collapse" id="multiCollapseExample_@i">
+                        <div class="txt-detail">
+                            訂單詳情
+                            <div style="text-align:right" class="">
+                                <button class="btn btn-light" type="button" id="detail"><i class="fa-solid fa-boxes-packing">  撿貨單</i></button>
+                            </div>
+                            @if (item.Status_id == 6)
+                            {
+                                <div style="text-align:right; font-size:20px;" class="mb-2"><span class="badge badge-danger badge-pill">訂單取消原因: @item.Status_Description</span></div>
+                            }
+                        </div>
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-5 mx-2">配送詳情</div>
+                            <div class="col-5 mx-2">商品詳情</div>
+                        </div>
+                        <div class="row d-flex justify-content-center">
+                            <table class="table-hover mx-2 col-5">
+                                <tr class="no-hover bg-secondary" style="height:30px">
+                                    <th>
+                                        配送方式
+                                    </th>
+                                    <th>
+                                        收件人
+                                    </th>
+                                    <th>
+                                        寄送地址
+                                    </th>
+                                    <th>
+                                        收件人電話
+                                    </th>
+                                </tr>
+                                <tr class="no-hover">
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ShipVia)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ShipName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ShipAddress)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ShipPhone)
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="table-hover col-5 mx-2">
+                                <tr class="no-hover bg-secondary" style="height:30px">
+                                    <th>
+                                        商品編號
+                                    </th>
+                                    <th>
+                                        商品名稱
+                                    </th>
+                                    <th>
+                                        單價
+                                    </th>
+                                    <th>
+                                        小計
+                                    </th>
+                                    <th>
+                                        數量
+                                    </th>
+                                </tr>
+                                @foreach (var details in item.Order_Details.ToList())
+                                {
+                                    <tr class="no-hover">
+                                        <td>
+                                            @Html.DisplayFor(modelItem => details.Product_id)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => details.ProductName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => details.UnitPrice)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => details.Quantity)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => details.SubTotal)
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+
+                    </div>
+                </td>
+            </tr>
+            i++;
+            shippedDate = null;
+        }
+    </tbody>
+</table></div>
+    
+</form>
+<br />
+<div style="text-align:right">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+</div>
+

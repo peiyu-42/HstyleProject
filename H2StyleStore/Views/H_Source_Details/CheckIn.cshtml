@@ -1,0 +1,52 @@
+﻿@model IEnumerable<H2StyleStore.Models.ViewModels.H_CheckInVM>
+
+@{
+    ViewBag.Title = "CheckIn";
+}
+
+<h2>打卡紀錄</h2>
+
+<table class="table table-hover">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Member_Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Activity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CheckIn_Times)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Last_Time)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Member_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Activity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CheckIn_Times)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Last_Time)
+            </td>
+        </tr>
+    }
+
+</table>
+
+<hr />
+<div>
+    <a href="HDetail" class="nav-link">
+        <i class="fa-solid fa-rotate-left"></i>
+        回列表
+    </a>
+</div>

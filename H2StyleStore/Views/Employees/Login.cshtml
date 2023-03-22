@@ -1,0 +1,91 @@
+﻿@model H2StyleStore.Models.ViewModels.Login_EmployeesVM
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>員工登入</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <script>
+        function fillAccountAndPassword1() {
+            // 填充账号和密码
+            document.getElementById("Account").value = "level1";
+            document.getElementById("Password").value = "level1";
+        }
+        function fillAccountAndPassword2() {
+            // 填充账号和密码
+            document.getElementById("Account").value = "level2";
+            document.getElementById("Password").value = "level2";
+        }
+        function fillAccountAndPassword3() {
+            // 填充账号和密码
+            document.getElementById("Account").value = "level3";
+            document.getElementById("Password").value = "level3";
+        }
+    </script>
+    <div class="form-horizontal">
+        @*<h4>Login_EmployeesVM</h4>*@
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Account, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Account, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Account, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="登入" class="btn btn-default" />
+                <input type="button" value="外部廠商權限" class="btn btn-default" onclick="fillAccountAndPassword1()" />
+                <input type="button" value="內部員工權限" class="btn btn-default" onclick="fillAccountAndPassword2()" />
+                <input type="button" value="全部權限" class="btn btn-default" onclick="fillAccountAndPassword3()" />
+            </div>
+        </div>
+
+        @*<div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="登入" class="btn btn-default" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="button" value="一般員工權限" class="btn btn-default" onclick="fillAccountAndPassword1()" />
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="button" value="員工權限" class="btn btn-default" onclick="fillAccountAndPassword2()" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="button" value="全部權限" class="btn btn-default" onclick="fillAccountAndPassword3()" />
+                </div>
+            </div>
+        </div>*@
+    </div>
+}
+
+@*<div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>*@
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

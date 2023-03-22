@@ -1,0 +1,222 @@
+﻿@model H2StyleStore.Models.ViewModels.CreateEssayVM
+@section Styles{
+    <!-- summernote -->
+    <link href="@Url.Content("https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css")" rel="stylesheet" type="text/css">
+
+    <!-- CodeMirror -->
+    <link rel="stylesheet" href="../../Scripts/plugins/codemirror/codemirror.css">
+    <link rel="stylesheet" href="../../Scripts/plugins/codemirror/theme/monokai.css">
+}
+
+
+@{
+    ViewBag.Title = "NewEssay";
+    var VideoCategories = ViewBag.VideoCategories as IEnumerable<SelectListItem>;
+}
+
+<h2>修改文章詳細内容</h2>
+<hr />
+
+@using (Html.BeginForm("EditEssays", "Essays", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        <div class="container">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Essay_Id)
+
+            @*<div class="form-group">
+            @Html.LabelFor(model => model.Influencer_Id, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Influencer_Id, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Influencer_Id, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+            @*<div class="form-group">
+            @Html.LabelFor(model => model.UplodTime, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.UplodTime, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UplodTime, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ETitle, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.ETitle, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ETitle, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @*<div class="form-group">
+            @Html.LabelFor(model => model.EContent, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.EContent, 8, 100, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EContent, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+            <div class="card-body  col-md-13" name="EContent">
+                <textarea id="summernote" style="display: none;">
+                
+            </textarea>
+                <input id="contentArea" name="EContent" hidden />
+                <input id="dbContent" name="dbContent" value=@Model.EContent hidden />
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(x => x.CategoryId, VideoCategories, new { @class = "form-control" })
+                        @*@Html.EditorFor(model => model.CategoryId, new { htmlAttributes = new { @class = "form-control" } })*@
+                        @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.Tags, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.Tags, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Tags, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2" for="File">上傳檔案</label>
+                <div class="col-md-10">
+                    <input type="file" name="files" clss="form-control" multiple="multiple" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Images, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div id="imgs" class="col-md-10">
+                    @foreach (var img in Model.Images)
+                    {
+                        <div class="imgCard">
+                            <img class="img" src="@img" style="width:100px ; height:100%;" />
+                            <button type="button" class="btn btn-default">刪除</button>
+                            <input name="Images" hidden value="@img" />
+                        </div>
+                    }
+                </div>
+            </div>
+
+
+
+            @{
+                //string UpLoad = string.Empty;
+                //if (Model.UpLoad.HasValue)
+
+                string UpLoad = Model.UpLoad.ToString("yyyy-MM-ddTHH:mm:ss");
+
+
+            }
+            <div class="form-group">
+                @Html.LabelFor(model => model.UpLoad, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input class="form-control" type="datetime-local" value="@UpLoad" name="UpLoad" />
+                    @*@Html.EditorFor(model => model.UpLoad, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.UpLoad, "", new { @class = "text-danger" })*@
+                </div>
+            </div>
+            @{
+                //string Removed = string.Empty;
+                //if (Model.Removed.HasValue)
+
+                string Removed = Model.Removed.ToString("yyyy-MM-ddTHH:mm:ss");
+
+            }
+            <div class="form-group">
+                @Html.LabelFor(model => model.Removed, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input class="form-control" type="datetime-local" value="@Removed" name="Removed" />
+                    @*@Html.EditorFor(model => model.Removed, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Removed, "", new { @class = "text-danger" })*@
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input id="submit" type="submit" value="確定修改" class="btn btn-default" onclick="return confirm('確定修改?')" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@*<div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>*@
+
+@*<div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="確定修改" class="btn btn-default" onclick="return confirm('確定修改?')" />
+        </div>
+    </div>*@
+<div>
+    <a href="../Index" class="nav-link">
+        <i class="fa-solid fa-rotate-left"></i>
+        回列表
+    </a>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $("#imgs").on("click", "[type = button]", function () {
+            $(this).parent().remove();
+        });</script>
+
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script src="~/Scripts/plugins/summernote/summernote-bs4.min.js"></script>
+    <!-- CodeMirror -->
+    <script src="../../Scripts/plugins/codemirror/codemirror.js"></script>
+    <script src="../../Scripts/plugins/codemirror/mode/css/css.js"></script>
+    <script src="../../Scripts/plugins/codemirror/mode/xml/xml.js"></script>
+    <script src="../../Scripts/plugins/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+    <script>
+        $(function () {
+            // Summernote
+            $('#summernote').summernote()
+
+        })
+        $("#submit").on("click", function () {
+            $("#contentArea").attr("value", encodeURI(($(".note-editable").html())));
+
+        });
+        $(document).ready(function () {
+            $(".note-editable").html(decodeURI($("#dbContent").val()));
+        });
+
+    </script>
+
+    @*@Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        
+        function setPreview(input) {
+            $("#videoPath").remove();
+            $('#preview').show(); // 設定顯示圖片
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#preview')
+                        .attr('src', e.target.result)
+                        .maxHeight(150) // 設定圖片最大高度
+                        .maxWidth(200); // 設定圖片最大寬度
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>*@
+
+}
+

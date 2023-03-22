@@ -1,0 +1,145 @@
+﻿@using X.PagedList;
+@using X.PagedList.Mvc
+@using X.PagedList.Web.Common;
+@using H2StyleStore.Models.ViewModels
+@model X.PagedList.IPagedList<ProductVM>
+
+
+<table class="table table-bordered borderless1 listTable">
+    <tr>
+        <th>
+            商品名稱
+        </th>
+        <th>
+            單價
+        </th>
+        <th>
+            商品描述
+        </th>
+        <th>
+            創建時間
+        </th>
+        <th>
+            <input id="checkAll" type="checkbox" />
+            下架
+        </th>
+        <th>
+            類別
+        </th>
+        <th>標籤</th>
+        <th>詳情</th>
+
+    </tr>
+    @{ int i = 0;}
+    @foreach (var item in Model)
+    {
+        
+        <tr>
+            <td>
+                @Html.ActionLink(item.Product_Name, "EditProduct", new { id = item.Product_Id })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitPrice)
+            </td>
+            <td width = "50%">
+                @Html.DisplayFor(modelItem => item.Description)
+                    
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Create_at)
+            </td>
+            <td class="discontinued">
+                @Html.EditorFor(modelItem => item.Discontinued)
+                <input class="ProductId" name="ProductId" hidden value="@item.Product_Id" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PCategoryName)
+            </td>
+            <td>
+                @("#"+string.Join(" #",item.tags))
+            </td>
+
+            <td><i data-toggle="collapse" href="#multiCollapseExample-@i" role="button" aria-expanded="false" aria-controls="multiCollapseExample-@i" class="fa-solid fa-angle-down"></i></td>
+
+        </tr>
+
+        <tr>
+            <td colspan="8">
+
+                <div class="collapse multi-collapse col-md-12" id="multiCollapseExample-@i">
+                    <div class="row col-md-12">
+                        <table class="table table-bordered col-md-6">
+                            <tr class="active">
+                                <td>顏色</td>
+                                <td>尺寸</td>
+                                <td>庫存量</td>
+                            </tr>
+
+                            
+
+                            @foreach (var spec in item.specs)
+                            {
+                                
+
+
+
+                                <tr class="active">
+                                    <td>@spec.Color</td>
+                                    <td>@spec.Size</td>
+                                    <td>@spec.Stock</td>
+
+                                </tr>
+                            }
+                        </table>
+                            @foreach (var img in item.images)
+                            {
+                                <div class="col-md-2">
+                                    <img class="img_big" src="../../Images/ProductImages/@img" />
+                                </div>
+                            }
+
+                    </div>
+                </div>
+
+
+
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+
+<div class="row d-flex">
+
+
+
+    @{
+        List<SelectListItem> pageSizeList = new List<SelectListItem>
+{
+        new SelectListItem{ Text = "5", Value = "5"},
+        new SelectListItem{ Text = "10", Value = "10"},
+        new SelectListItem{ Text = "15", Value = "15"},
+    };
+
+<div class="col-4">
+
+    <label>每頁顯示: </label>
+    @Html.DropDownList("pageSize", pageSizeList, new { @class = "" })
+    <label>筆 </label>
+
+</div>
+
+    }
+
+    <div class="col-4 d-flex justify-content-center">
+        @Html.PagedListPager((IPagedList)Model, page =>
+            page.ToString(),
+            new PagedListRenderOptionsBase
+            {
+                LiElementClasses = new string[] { "page-item" },
+                PageClasses = new string[] { "page-link" }
+        })
+
+    </div>
+</div>

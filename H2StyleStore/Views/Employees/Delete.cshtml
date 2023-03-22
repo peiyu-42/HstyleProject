@@ -1,0 +1,56 @@
+﻿@model H2StyleStore.Models.EFModels.Employee
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>刪除</h2>
+
+<h3>你確定要刪除此員工帳號嗎？</h3>
+<div>
+    @*<h4>Employee</h4>*@
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @*@Html.DisplayNameFor(model => model.PermissionsE.Level)*@權限名稱
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PermissionsE.Level)
+        </dd>
+
+        <dt>
+            @*@Html.DisplayNameFor(model => model.Account)*@帳號
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Account)
+        </dd>
+
+        <dt>
+            @*@Html.DisplayNameFor(model => model.Title)*@標題
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.EncryptedPassword)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EncryptedPassword)
+        </dd>*@
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("返回目錄", "Index")
+        </div>
+    }
+</div>

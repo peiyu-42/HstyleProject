@@ -1,0 +1,121 @@
+﻿@model IEnumerable<H2StyleStore.Models.EFModels.Member>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>會員中心</h2>
+
+@*<p>
+    @Html.ActionLink("新增會員資料", "Create")   這個不要開   有自己做得VM
+</p>*@
+<table class="table">
+    <tr>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Name)*@姓名
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Email)*@信箱
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Account)*@帳號
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Phone_Number)*@電話號碼
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Address)*@地址
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Gender)*@性別
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Birthday)*@生日
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.Permission_Id)
+        </th>*@
+        <th>
+            @*@Html.DisplayNameFor(model => model.Jointime)*@加入會員時間
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.Mail_verify)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Mail_code)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Total_H)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EncryptedPassword)
+        </th>*@
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Account )
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Phone_Number)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            @{ 
+                if(item.Gender == true)
+                {
+                        <label>男</label> ;
+                }
+                else
+                {
+                    <label>女</label>;
+                }
+            }
+           
+            @*@Html.DisplayFor(modelItem => item.Gender, "", new { @class = "text-danger" })*@
+
+
+            @*@Html.DisplayFor(modelItem => item.Gender, "{0:true;false}")*@
+            @*@Html.DisplayFor(modelItem => item.Gender)*@
+        </td>
+        <td>
+            @item.Birthday.ToString("yyyy/MM/dd")
+            
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.Permission_Id)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.Jointime)    
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.Mail_verify)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Mail_code)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Total_H)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EncryptedPassword)
+        </td>*@
+        <td>
+            @Html.ActionLink("編輯", "Edit", new { id=item.Id }) 
+            @*@Html.ActionLink("Details", "Details", new { id=item.Id }) |*@
+            @*@Html.ActionLink("刪除", "Delete", new { id=item.Id })*@
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,146 @@
+﻿@model PagedList.IPagedList<H2StyleStore.Models.ViewModels.VideoVM>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Index";
+    var categories = ViewBag.Categories as IEnumerable<SelectListItem>;
+    var videoTitle = ViewBag.VideoTitle as string;
+    var tagName = ViewBag.TagName as string;
+}
+
+<style>
+    .width {
+        width: 100px;
+    }
+</style>
+
+<div>
+    <h2>影片列表<span style="margin-left:30px;margin-bottom:10px;"> @Html.ActionLink("新增影片", "CreateVideo", null, new { @class = "btn btn-primary mb-2" })</span> </h2>
+</div>
+
+<form>
+    <div class="row">
+        <div class="col-md-3">影片分類:@Html.DropDownList("categoryId", categories, new { @class = "form-control" })</div>
+        <div class="col-md-3">標籤:<input type="text" name="tagName" class="form-control" value="@tagName" placeholder="請輸入標籤" /></div>
+        <div class="col-md-4">影片名稱:<input type="text" name="videoTitle" class="form-control" value="@videoTitle" placeholder="請輸入影片名稱" /></div>
+        <div class="col-md-2" style="margin-top:24px;margin-bottom:0px;padding-left:15px">
+            <input type="submit" class="btn btn-success" value="搜尋" />
+        </div>
+    </div>
+</form>
+<br />
+
+<table class="table">
+    <tr>
+        <th>
+            影片縮圖
+        </th>
+
+        <th>
+            影片名稱
+        </th>
+        <th class="width">
+            @Html.ActionLink("影片類別", "Index", new { sortOrder = ViewBag.NameSortParm }, new { @class = "text-dark fa-solid fa-sort" })
+        </th>
+        <th>
+            標籤
+        </th>
+        <th>
+            影片說明
+        </th>
+        <th>
+            @Html.ActionLink("上架時間", "Index", new { sortOrder = ViewBag.NameSortParm }, new { @class = "text-dark fa-solid fa-sort" })
+        </th>
+        <th>
+            @Html.ActionLink("下架時間", "Index", new { sortOrder = ViewBag.NameSortParm }, new { @class = "text-dark fa-solid fa-sort" })
+        </th>
+        <th>
+            狀態
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <img class="image" src="../../Images/VideoImages/@item.Image" width="200">
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryName)
+            </td>
+            <td>
+                @("#"+string.Join(" #",item.Tags))
+            </td>
+            <td>
+                <div class="container">
+                    @Html.DisplayFor(modelItem => item.Description)
+                </div>
+            </td>
+            <td>
+                @*<div id = "OnShelf">
+                @item.OnShelffTime
+            </div>*@
+                @Html.DisplayFor(modelItem => item.OnShelffTime, new { id = "OnShelf" })
+                <p id="onValue"></p>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OffShelffTime, new { id = "OffShelf" })
+                @*<div id="OffShelf">
+                @item.OffShelffTime
+            </div>*@
+                <p id="offValue"></p>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsOnShelff, new { id = "IsOnShelff" })
+                @*<div id="OffShelf">
+                @item.OffShelffTime
+            </div>*@
+                <p id="offValue"></p>
+            </td>
+            <td>
+                @Html.ActionLink("修改", "EditVideo", new { id = item.Id }, new { @class = "btn btn-default" })
+            </td>
+        </tr>
+    }
+</table>
+
+<div style="text-align:right">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+</div> 
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        //$(document).ready(function () {
+        //    let onShelfTime = $("#OnShelf").val();
+        //    let offShelfTime = $("#OffShelf").val();
+        //    if (onShelfTime==null) {
+        //        $("#onValue").text("無");
+        //    }
+        //    if (offShelfTime == null) {
+        //        $("#offValue").text("無");
+        //    }
+        //})
+        //function setPreview(input) {
+        //    $('#preview').show();
+        //    if (input.files && input.files[0]) {
+        //        var reader = new FileReader();
+        //        reader.onload = function (e) {
+        //            $('#preview')
+        //                .attr('src', e.target.result)
+        //                .maxHeight(150) // 設定圖片最大高度
+        //                .maxWidth(200);
+        //        };
+        //        reader.readAsDataURL(input.files[0]);
+        //    } else {
+        //        preview.innerHTML = "檔案格式未支援";
+        //    }
+        //}
+    </script>
+}

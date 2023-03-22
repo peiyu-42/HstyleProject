@@ -1,0 +1,81 @@
+﻿body {
+}
+.table-hover > tbody > tr.no-hover:hover {
+    background-color: transparent;
+}
+
+.borderless td, .borderless th {
+    border: none;
+}
+
+
+
+.txt-detail{
+    font-size:20px;
+    font-weight:700;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media print {
+    .donotprint {
+        visibility: hidden;
+    }
+}
+
+[aria-expanded="false"] .menu__icon--open {
+    display: inline;
+}
+
+[aria-expanded="false"] .menu__icon--close {
+    display: none;
+}
+
+[aria-expanded="true"] .menu__icon--open {
+    display: none;
+}
+
+[aria-expanded="true"] .menu__icon--close {
+    display: inline;
+}
+
+.note-editable {
+    height: 325px
+}
+
+.h300px {
+    height: 300px;
+}
+
+.w600px {
+    width: 600px;
+}
+
+.object-fit-cover {
+    object-fit: cover;
+}
+
+.fz40 {
+    font-size: 40px;
+}
+
+.z1 {
+    z-index: 1;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.mt-50 {
+    margin-top: -50px;
+}
+
+.orderrow {
+    height: 100px; /* 設定表格容器的高度 */
+    overflow-y: scroll; /* 設定垂直捲軸，以便處理表格內容過多的情況 */
+}

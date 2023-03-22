@@ -1,0 +1,80 @@
+﻿@model IEnumerable<H2StyleStore.Models.ViewModels.Order_DetailsVM>
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<h4 class="title">撿貨單</h4>
+
+<div style="text-align:right" class="mb-2">
+
+    <button name="print" type="button" class="donotprint btn btn-secondary" onClick="doprint()"> <i class="fa-solid fa-print">  列印</i></button>
+
+</div>
+
+<div class="container">
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Product_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubTotal)
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product_id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnitPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubTotal)
+                </td>
+            </tr>
+        }
+    </table>
+
+    @{ int total = 0;}
+    @foreach (var item in Model)
+    {
+        total += @item.SubTotal;
+    }
+    <div class="col-md-6" style="font-weight:bold ;">
+        <div class="col-md-12">合計:@total 元</div>
+    </div>
+</div>
+<a href="../">
+    <i class="fa-solid fa-rotate-left donotprint ml-2 mt-5">  回列表</i>
+</a>
+
+@section Scripts{
+    <script>
+        function doprint() {
+            var text = document;
+            print(text);
+        };
+    </script>
+}
+
+

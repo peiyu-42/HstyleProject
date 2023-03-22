@@ -1,0 +1,280 @@
+﻿@model H2StyleStore.Models.ViewModels.CreateProductVM
+
+@{
+    ViewBag.Title = "NewProduct";
+    var pCategories = ViewBag.PCategoryItems as IEnumerable<SelectListItem>;
+}
+
+<h2>新增商品</h2>
+
+
+@using (Html.BeginForm("NewProduct", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Product_Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Product_Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Product_Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.UnitPrice, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.UnitPrice, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.UnitPrice, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.tags, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.tags, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.tags, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <textarea class = "form-control" name="Description" rows="10" style="width:100%"></textarea>
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Discontinued, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.Discontinued)
+                @Html.ValidationMessageFor(model => model.Discontinued, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    @*<div class="form-group">
+        @Html.LabelFor(model => model.DisplayOrder, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.DisplayOrder, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.DisplayOrder, "", new { @class = "text-danger" })
+        </div>
+    </div>*@
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DisplayOrder, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10 d-flex">
+            <input class="form-control col-6"
+                   id="rangeValue"
+                   type="text"
+                   value="1"
+                   name="DisplayOrder"
+                   readonly />
+            <div class="input-group-text col-6">
+                <input class="form-range flex-fill"
+                       type="range"
+                       id="customRange1"
+                       min="1"
+                       max=@ViewBag.NoOfProducts
+                       step="1"
+                       value="1" />
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        
+            <div class="col-2">@Html.LabelFor(model => model.Category_Id, htmlAttributes: new { @class = "control-label" })</div>
+
+            <div class="text-right col-8 p-2"><button id="newCategory" class="btn btn-success" type="button">新增類別</button></div>
+
+        
+        
+        
+        <div class="col-md-10">
+            @Html.DropDownListFor(x => x.Category_Id, pCategories, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Category_Id, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div id="imgPreview" class="d-flex">
+
+    </div>
+
+    <div class="form-group" name="upload" id="upload">
+        <label class="control-label col-md-2" for="File">上傳檔案</label>
+        <div class="col-md-10">
+            <input id="imgInput" type="file" name="files" class="form-control" multiple="multiple" accept="image/*" />
+            @Html.ValidationMessageFor(model => model.images, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+    @{
+        List<SelectListItem> list = new List<SelectListItem>
+{
+                                        new SelectListItem{Value="XL", Text="XL"},
+                                        new SelectListItem{Value="L", Text="L"},
+                                        new SelectListItem{Value="M", Text="M"},
+                                        new SelectListItem{Value="S", Text="S"},
+                                        new SelectListItem{Value="XS", Text="XS"},
+                                    };
+    }
+    <div id="specsArea">
+
+        <div class="row">
+            <div class="col-md-2">
+                <label class="control-label" for="specs">規格</label>
+            </div>
+            <div class="col-md-8 text-right"><button type="button" id="addSpecBtn" class=" btn btn-default mb-1">新增規格</button></div>
+        </div>
+
+        <div class="form-group spec">
+            <div class="col-md-10 input-group specs mb-2" id="specErr" name="specErr">
+                <input class="form-control text-box Color" name="" type="text" value="" placeholder="顏色">
+                @Html.DropDownList("Size", list, new { @class = "form-control text-box Size" })
+                <input class="form-control text-box Stock" name="" type="number" value="" placeholder="庫存">
+                <button type="button" class="btn btn-default delSpecBtn">刪除</button>
+            </div>
+        </div>
+
+
+    </div>
+    @Html.ValidationMessageFor(model => model.specs, "", new { @class = "text-danger" })
+
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input id="submit" type="submit" value="儲存" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("返回列表", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+<script>
+    $("#newCategory").on("click", function () {
+        var newCategory = prompt("請輸入新的類別名稱");
+        if (newCategory == null || newCategory == "") {
+            alert("您沒有輸入任何文字");
+        } else {
+
+            $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("NewCategory", "Products")',
+                    contentType: "application/json",
+                    data: JSON.stringify({ newCategory })
+            }).done(function (result) {
+                
+                const dom = document.createElement("option");
+                dom.setAttribute('value', result[0]);
+                dom.textContent = result[1];
+                $("#Category_Id").append(dom);
+                alert("新增類別成功");
+            }).fail(function (err) {
+                alert(err.statusText)
+            })
+        }
+        
+    });
+
+
+    const range = document.querySelector("input[type=range]");
+    const rangeValue = document.querySelector("#rangeValue");
+    range.addEventListener("input", function (e) {
+        rangeValue.value = range.value;
+    });
+
+        $("#addSpecBtn").on("click", function () {
+            let template =
+                `<div class="col-md-10 input-group specs">
+                          <input class="form-control text-box Color" id="" name="" type="text" value="" placeholder="顏色">
+                          <select class="form-control text-box Size" id="Size" name="Size"><option value="XL">XL</option>
+            <option value="L">L</option>
+            <option value="M">M</option>
+            <option value="S">S</option>
+            <option value="XS">XS</option>
+        </select>
+                          <input class="form-control text-box Stock " id="" name="" type="number" value="" placeholder="庫存">
+                          <button type="button" class="btn btn-default delSpecBtn">刪除</button>
+                    </div>`;
+            const dom = document.createElement("div");
+            dom.setAttribute('class', `form-group spec`);
+            dom.innerHTML = template;
+            $("#specsArea").append(dom);
+
+        });
+
+        $("#specsArea").on("click", "[type = button]", function () {
+            if ($("#specsArea").children('.spec').length <= 1) {
+                alert("至少需要一組規格");
+            } else {
+                if ($(this).attr("id") != "addSpecBtn") {
+                    $(this).parent().parent().remove();
+                }
+            }
+
+
+        });
+
+        $("#submit").on("click", function () {
+            var i = 0;
+            $(".Color").each(function () {
+                $(this).attr('name', `Specs[${i}].Color`);
+                i++;
+            });
+            var j = 0;
+            $(".Size").each(function () {
+                $(this).attr('name', `Specs[${j}].Size`);
+                j++;
+            });
+            var k = 0;
+            $(".Stock").each(function () {
+                $(this).attr('name', `Specs[${k}].Stock`);
+                k++;
+            });
+
+        });
+
+        $("#imgInput").change(function () {
+            $("#imgPreview").empty();
+            readURL(this);
+        });
+
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+
+                Array.from(input.files).forEach(element => {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+
+                        let template =`<img class="img" src="${e.target.result}" />`;
+                        const dom = document.createElement("div");
+                        dom.setAttribute('class', `imgCard`);
+                        dom.innerHTML = template;
+                        $("#imgPreview").append(dom);
+
+                    }
+
+                    reader.readAsDataURL(element);
+
+                });
+
+            }
+
+        }
+
+</script>
+}
+

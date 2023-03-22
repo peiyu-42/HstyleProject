@@ -1,0 +1,128 @@
+﻿@model H2StyleStore.Models.EFModels.Member
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>刪除</h2>
+
+<h3>你確定要刪除此會員帳號嗎？</h3>
+<div>
+    @*<h4>會員</h4>*@
+    <hr />
+    <dl class="dl-horizontal">
+        @*<dt>
+            @Html.DisplayNameFor(model => model.PermissionsM.Level)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PermissionsM.Level)
+        </dd>*@
+
+        <dt>
+            @*@Html.DisplayNameFor(model => model.Name)*@姓名
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @*@Html.DisplayNameFor(model => model.Email)*@信箱
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @*@Html.DisplayNameFor(model => model.Account)*@帳號
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Account)
+        </dd>
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.Password)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Password)
+        </dd>*@
+
+        <dt>
+            @*@Html.DisplayNameFor(model => model.Phone_Number)*@電話號碼
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Phone_Number)
+        </dd>
+
+        <dt>
+            @*@Html.DisplayNameFor(model => model.Address)*@地址
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            @*@Html.DisplayNameFor(model => model.Gender)*@性別
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Gender)
+        </dd>
+
+        <dt>
+            @*@Html.DisplayNameFor(model => model.Birthday)*@生日
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Birthday)
+        </dd>
+
+        <dt>
+            @*@Html.DisplayNameFor(model => model.Jointime)*@加入時間
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Jointime)
+        </dd>
+
+        <dt>
+            @*@Html.DisplayNameFor(model => model.Mail_verify)*@開通狀態
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Mail_verify)
+        </dd>
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.Mail_code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Mail_code)
+        </dd>*@
+
+        <dt>
+            @*@Html.DisplayNameFor(model => model.Total_H)*@優惠幣
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Total_H)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("返回目錄", "Index")
+        </div>
+    }
+</div>

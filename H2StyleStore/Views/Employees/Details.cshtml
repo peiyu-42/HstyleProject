@@ -1,0 +1,50 @@
+﻿@model H2StyleStore.Models.EFModels.Employee
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>個人資料</h2>
+
+<div>
+    @*<h4>Employee</h4>*@
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PermissionsE.Level)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PermissionsE.Level)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Account)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Account)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.EncryptedPassword)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EncryptedPassword)
+        </dd>*@
+
+    </dl>
+</div>
+<p>
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.Employee_id }) |
+    @Html.ActionLink("Back to List", "Index")*@
+</p>
